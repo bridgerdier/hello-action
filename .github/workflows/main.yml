@@ -32,8 +32,14 @@ jobs:
       id-token: write
 
     steps:
-      - name: Dump context
-        uses: crazy-max/ghaction-dump-context@v2
+#      - name: Dump context
+#        uses: crazy-max/ghaction-dump-context@v2
+      - uses: bhowell2/github-substring-action@1.0.2
+        id: release_version
+        with:
+          value: "${{ github.ref_name }}"
+          index_of_str: "v"
+          output_name: tag
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -72,7 +78,7 @@ jobs:
         with: 
           # The github tag. e.g: v1.0.1
           # Download assets from a specific tag/version
-          tag: "${{ env.TAG }}"
+          tag: "${{ steps.release_version.outputs.tag }}"
     
           ## The release id to download files from 
           #releaseId: ""
