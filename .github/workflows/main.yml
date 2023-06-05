@@ -8,16 +8,10 @@ name: Build Docker Image
 on:
   release:
     types: [published]
-  workflow_dispatch:
-    tag:
-      description: 'Release tag'
-      required: true
-
 
 env:
   REGISTRY: docker.io
   IMAGE_NAME: predic8/membrane
-  TAG: "${{ github.ref_name }}"
 
 
 jobs:
@@ -73,12 +67,14 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
           
       - uses: robinraju/release-downloader@v1.8
         with: 
           # The github tag. e.g: v1.0.1
           # Download assets from a specific tag/version
-          tag: "${{ steps.release_version.outputs.tag }}"
+          tag: "${{ github.ref_name }}"
     
           ## The release id to download files from 
           #releaseId: ""
@@ -86,7 +82,7 @@ jobs:
           # The name of the file to download.
           # Use this field only to specify filenames other than tarball or zipball, if any.
           # Supports wildcard pattern (eg: '*', '*.deb', '*.zip' etc..)
-          fileName: "hello-action-${{ env.TAG }}.jar"
+          fileName: "hello-action-${{ steps.release_version.outputs.tag }}.jar"
     
           # Download the attached zipball (*.zip)
           zipBall: false
