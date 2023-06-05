@@ -17,7 +17,7 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: predic8/membrane
-  TAG: "${{ env.GITHUB_REF_NAME }}"
+  TAG: "${{ process.env.GITHUB_REF_NAME }}"
 
 
 jobs:
