@@ -17,6 +17,7 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: predic8/membrane
+  TAG: "${{ GITHUB_REF#refs/tags/ | inputs.tag }}"
 
 
 jobs:
@@ -31,6 +32,8 @@ jobs:
       id-token: write
 
     steps:
+      - name: Dump context
+        uses: crazy-max/ghaction-dump-context@v2
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -69,7 +72,7 @@ jobs:
         with: 
           # The github tag. e.g: v1.0.1
           # Download assets from a specific tag/version
-          tag: "${{ GITHUB_REF#refs/tags/ | inputs.tag }}"
+          tag: "${{ env.TAG }}"
     
           ## The release id to download files from 
           #releaseId: ""
@@ -77,7 +80,7 @@ jobs:
           # The name of the file to download.
           # Use this field only to specify filenames other than tarball or zipball, if any.
           # Supports wildcard pattern (eg: '*', '*.deb', '*.zip' etc..)
-          fileName: "hello-action-*.jar"
+          fileName: "hello-action-${{ env.TAG }}.jar"
     
           # Download the attached zipball (*.zip)
           zipBall: false
