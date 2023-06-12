@@ -1,23 +1,28 @@
-name: Greeter
+name: Build
 
 on:
   workflow_dispatch:
     inputs:
-      n:
-        description: Magic number
-        type: number
-        default: 0
-        required: false
-      greeting:
-        description: A greeting message
+      version:
+        description: The version number
         type: string
         default: ''
-        required: false
-  repository_dispatch:
-    types: [on-greeting]
+        required: true
 jobs:
-  greet:
-    runs-on: ubuntu-20.04
+  publish:
+    runs-on: ubuntu-latest
     steps:
-      - name: Greeting
-        run: echo "${{ github.event.inputs.greeting }} to you ${{ github.event.inputs.n }} times"
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+      - id: create-release-version
+        name: Create Release Version
+        run: |
+          mvn \
+            compile -Dfoo=${{ github.event.inputs.version}}:
