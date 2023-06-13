@@ -42,7 +42,7 @@ jobs:
         name: Tag release
         run: |
           git config user.name ${{ github.actor }}
-          git config user.email ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          git config user.email ${{ github.actor }}@users.noreply.github.com
           git tag -a v${{ github.event.inputs.version }} -m "Release Tag ${{ github.event.inputs.version }}"
           git push --tags
       - id: setup-snapshot
@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "${{ github.event.inputs.version }}-SNAPSHOT" > version.txt
           git config user.name ${{ github.actor }}
-          git config user.email ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          git config user.email ${{ github.actor }}@users.noreply.github.com
           git add .
           git commit -m "next snapshot version"
           git push
