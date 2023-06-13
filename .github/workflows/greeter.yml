@@ -25,4 +25,28 @@ jobs:
         name: Create Release Version
         run: |
           mvn \
-            compile -Dfoo=${{ github.event.inputs.version}}:
+            compile -Dfoo=${{ github.event.inputs.version }}
+          echo "${{ github.event.inputs.version }}" > version.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: release/v${{ github.event.inputs.version }}
+          commit-message: "Release ${{ github.event.inputs.version }}"
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      - id: tag-release
+        name: Tag release
+        run: |
+          git tag -a v${{ github.event.inputs.version }} -m "Release Tag ${{ github.event.inputs.version }}"
+          git push --tags
+      - id: setup-snapshot
+        name: Setup next snapshot version
+        run: |
+          echo "${{ github.event.inputs.version }}-SNAPSHOT" > version.txt
+          git add .
+          git commit -m "next snapshot version"
+          git push
