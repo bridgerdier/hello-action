@@ -33,6 +33,7 @@ jobs:
         with:
           branch: release/v${{ github.event.inputs.version }}
           commit-message: "Release ${{ github.event.inputs.version }}"
+          title: "Release ${{ github.event.inputs.version }}"
       - name: Check outputs
         if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
@@ -43,6 +44,7 @@ jobs:
         run: |
           git config user.name ${{ github.actor }}
           git config user.email ${{ github.actor }}@users.noreply.github.com
+          git checkout release/v${{ github.event.inputs.version }}
           git tag -a v${{ github.event.inputs.version }} -m "Release Tag ${{ github.event.inputs.version }}"
           git push --tags
       - id: setup-snapshot
@@ -51,6 +53,7 @@ jobs:
           echo "${{ github.event.inputs.version }}-SNAPSHOT" > version.txt
           git config user.name ${{ github.actor }}
           git config user.email ${{ github.actor }}@users.noreply.github.com
+          git checkout release/v${{ github.event.inputs.version }}
           git add .
           git commit -m "next snapshot version"
           git push
