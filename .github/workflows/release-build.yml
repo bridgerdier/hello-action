@@ -10,8 +10,8 @@ jobs:
     if: github.event.pull_request.merged && startsWith(github.event.pull_request.title, 'Release ')
     runs-on: ubuntu-latest
     steps:
-      - uses: crazy-max/ghaction-dump-context@v2
-        name: Dump Context
+#      - uses: crazy-max/ghaction-dump-context@v2
+#        name: Dump Context
       - name: Get version
         id: get_version
         run: echo '${{ github.head_ref }}' | sed 's/release\/v/::set-output name=VERSION::/'
@@ -40,6 +40,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           name: v${{ steps.get_version.outputs.VERSION }}
+          tag: ${{ github.head_ref }}
           # generateReleaseNotes: true
           draft: true
           artifacts: "version.txt,pom.xml"
