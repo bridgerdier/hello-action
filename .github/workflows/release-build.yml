@@ -12,8 +12,23 @@ jobs:
     steps:
       - uses: crazy-max/ghaction-dump-context@v2
         name: Dump Context
-      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
         with:
-          ref: ${{ github.head_ref }}
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: actions/checkout@v3
+      - run: |
+          cat version.txt
+          echo "SNAPSHOT" > version.txt
+      - name: Create Pull Request for next Snapshot
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Snapshot version"
+          title: "Snapshot version"
+          author: "github-actions <github-actions@github.com>"
+          body: "Update all project `pom.xml` and related files to next snapshot version"
+      - uses: actions/checkout@v3
       - run: |
           cat version.txt
