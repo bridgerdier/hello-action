@@ -9,7 +9,7 @@ on:
         default: ''
         required: true
 jobs:
-  publish:
+  create-pr:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
