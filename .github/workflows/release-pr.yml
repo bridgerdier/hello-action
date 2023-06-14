@@ -35,6 +35,7 @@ jobs:
           commit-message: "Release ${{ github.event.inputs.version }}"
           title: "Release ${{ github.event.inputs.version }}"
           author: "github-actions <github-actions@github.com>"
+          body: "Update `pom.xml`s and related files to release version ${{ github.event.inputs.version }}"
           delete-branch: false
 
       - name: Check outputs
