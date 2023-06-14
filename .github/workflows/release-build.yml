@@ -41,6 +41,8 @@ jobs:
         with:
           name: v${{ steps.get_version.outputs.VERSION }}
           tag: ${{ github.head_ref }}
-          # generateReleaseNotes: true
-          draft: true
+          generateReleaseNotes: true
+#          draft: true
+          prerelease: true
+#          makeLatest: true
           artifacts: "version.txt,pom.xml"
