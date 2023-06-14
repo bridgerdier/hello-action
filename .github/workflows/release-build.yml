@@ -21,7 +21,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - uses: actions/checkout@v3
-      - run: |
+      - name: Setup next Snapshot version
+        run: |
           cat version.txt
           echo "${{ steps.get_version.outputs.VERSION }}-SNAPSHOT" > version.txt
       - name: Create Pull Request for next Snapshot
@@ -31,7 +32,14 @@ jobs:
           commit-message: "Snapshot version"
           title: "Snapshot version"
           author: "github-actions <github-actions@github.com>"
-          body: "Update all project `pom.xml` and related files to next snapshot version"
+          body: "Update all project `pom.xml` and related files to post-${{ steps.get_version.outputs.VERSION }} snapshot version"
       - uses: actions/checkout@v3
-      - run: |
-          cat version.txt
+      - run: cat version.txt
+#      - run: mvn
+      - name: Create Release v${{ steps.get_version.outputs.VERSION }}
+        uses: ncipollo/release-action@v1
+        with:
+          name: v${{ steps.get_version.outputs.VERSION }}
+          # generateReleaseNotes: true
+          draft: true
+          artifacts: "version.txt,pom.xml"
