@@ -12,3 +12,8 @@ jobs:
     steps:
       - uses: crazy-max/ghaction-dump-context@v2
         name: Dump Context
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - run: |
+          cat version.txt
