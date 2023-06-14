@@ -14,7 +14,7 @@ jobs:
         name: Dump Context
       - name: Get version
         id: get_version
-        run: echo '${{ github.head_ref }}' | sed 's/release\/v/::set-output name=VERSION::/'
+        run: echo '${{ github.head_ref }}' | sed 's/v/::set-output name=VERSION::/'
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
