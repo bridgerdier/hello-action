@@ -7,7 +7,7 @@ on:
       - main
 jobs:
   build-release:
-    if: ${{ github.event.pull_request.merged && startsWith(github.event.title, 'Release ') }}
+    if: github.event.pull_request.merged && startsWith(github.event.pull_request.title, 'Release ')
     runs-on: ubuntu-latest
     steps:
       - uses: crazy-max/ghaction-dump-context@v2
