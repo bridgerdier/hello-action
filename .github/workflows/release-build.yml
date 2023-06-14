@@ -43,8 +43,9 @@ jobs:
           tag: ${{ github.head_ref }}
           generateReleaseNotes: true
 #          draft: true
-          prerelease: true
-#          makeLatest: true
+#          prerelease: true
+          makeLatest: true
           artifacts: "version.txt,pom.xml"
+          token: ${{ secrets.PAT }}
       - uses: crazy-max/ghaction-dump-context@v2
         name: Dump Context
